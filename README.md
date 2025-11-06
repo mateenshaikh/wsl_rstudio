@@ -102,7 +102,14 @@ Once inside your Ubuntu terminal:
 1. Install dependencies and add the CRAN repository:
    ```bash
    sudo apt install -y software-properties-common dirmngr
+   
+   # Download and add CRAN GPG key
    wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+   
+   # Verify the key fingerprint (optional but recommended)
+   gpg --show-keys /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+   
+   # Add CRAN repository
    sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
    ```
 
@@ -133,6 +140,12 @@ Once inside your Ubuntu terminal:
    # Example for Ubuntu 22.04 (Jammy) - adjust version as needed
    VERSION="2023.12.1-402"
    wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-${VERSION}-amd64.deb
+   ```
+   
+   **Optional but recommended**: Verify the download using SHA256 checksum from Posit's website:
+   ```bash
+   # Get the expected checksum from https://posit.co/download/rstudio-server/
+   # Compare with: sha256sum rstudio-server-${VERSION}-amd64.deb
    ```
 
 3. Install RStudio Server:
@@ -291,7 +304,7 @@ Then just run `start-rstudio` when needed.
 
 2. Add this line at the end (replace `yourusername` with your actual username):
    ```
-   yourusername ALL=(ALL) NOPASSWD: /usr/lib/rstudio-server/bin/rserver
+   yourusername ALL=(ALL) NOPASSWD: /usr/sbin/rstudio-server
    ```
 
 3. Then add to `.bashrc`:
