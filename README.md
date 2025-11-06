@@ -124,19 +124,25 @@ Once inside your Ubuntu terminal:
    sudo apt install -y gdebi-core
    ```
 
-2. Download RStudio Server (check https://posit.co/download/rstudio-server/ for the latest version):
+2. Download RStudio Server:
+   
+   First, check https://posit.co/download/rstudio-server/ for the latest version.
+   
+   Then download it (replace the version number with the current one):
    ```bash
-   wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2023.12.1-402-amd64.deb
+   # Example for Ubuntu 22.04 (Jammy) - adjust version as needed
+   VERSION="2023.12.1-402"
+   wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-${VERSION}-amd64.deb
    ```
 
 3. Install RStudio Server:
    ```bash
-   sudo gdebi rstudio-server-2023.12.1-402-amd64.deb -n
+   sudo gdebi rstudio-server-${VERSION}-amd64.deb -n
    ```
 
    Or use dpkg:
    ```bash
-   sudo dpkg -i rstudio-server-2023.12.1-402-amd64.deb
+   sudo dpkg -i rstudio-server-${VERSION}-amd64.deb
    sudo apt-get install -f -y
    ```
 
@@ -152,12 +158,7 @@ Once inside your Ubuntu terminal:
    sudo rstudio-server start
    ```
 
-3. To ensure it starts automatically, you can add this to your `.bashrc` or `.profile`:
-   ```bash
-   echo "sudo rstudio-server start" >> ~/.bashrc
-   ```
-
-**Note:** You may need to enter your password each time you start a new WSL session.
+**Note:** RStudio Server needs to be started manually in each WSL session. You'll need to enter your password when starting the service.
 
 ## Step 7: Access RStudio in Browser
 
@@ -267,6 +268,36 @@ To stop RStudio Server when not in use:
 ```bash
 sudo rstudio-server stop
 ```
+
+### Automate RStudio Server Startup (Optional)
+
+If you want RStudio Server to start automatically, you have a few options:
+
+**Option 1: Manual start alias**
+Add an alias to your `.bashrc` for easy starting:
+```bash
+echo "alias start-rstudio='sudo rstudio-server start'" >> ~/.bashrc
+source ~/.bashrc
+```
+Then just run `start-rstudio` when needed.
+
+**Option 2: Configure passwordless sudo for RStudio Server (Advanced)**
+⚠️ **Security Note**: Only do this if you understand the security implications.
+
+1. Edit sudoers file:
+   ```bash
+   sudo visudo
+   ```
+
+2. Add this line at the end (replace `yourusername` with your actual username):
+   ```
+   yourusername ALL=(ALL) NOPASSWD: /usr/lib/rstudio-server/bin/rserver
+   ```
+
+3. Then add to `.bashrc`:
+   ```bash
+   echo "sudo rstudio-server start 2>/dev/null" >> ~/.bashrc
+   ```
 
 ### Update RStudio Server
 
