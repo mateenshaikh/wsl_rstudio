@@ -337,7 +337,7 @@ htop
 
 ## Resources
 
-- [WSL Documentation](https://docs.microsoft.com/en-us/windows/wsl/)
+- [WSL Documentation](https://learn.microsoft.com/en-us/windows/wsl/)
 - [RStudio Server Documentation](https://posit.co/products/open-source/rstudio-server/)
 - [R Project](https://www.r-project.org/)
 - [Ubuntu Documentation](https://ubuntu.com/wsl)
