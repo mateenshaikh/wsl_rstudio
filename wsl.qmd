@@ -1,0 +1,185 @@
+---
+title: "wsl"
+format: html
+code-copy: true
+eval: false
+embed-resources: true
+toc: true
+---
+
+# Installing Linux
+
+You install the Windows Subsystem for Linux.
+
+Open a powershell and install wsl using the following
+
+```.bash
+wsl --install
+```
+This should install "Ubuntu", which should be in your start menu now. 
+
+In doing so it will ask you to create a username/password. You can create new users and change passwords for later if you want.
+
+You should immediately run an update. Note that `sudo` commands require a password the first time you use them in a session.
+
+
+```.bash
+sudo apt update
+sudo apt upgrade
+```
+
+## note the version number
+A new LTS version of ubuntu comes out in April of even years and the version number is named accordingly. 2020.04, 2022.04, 2024.024, 2026.04, etc.. This won't update until you go to the windows store and manually update. If you ever forget, in Ubuntu's shell, you can run
+
+```.bash
+lsb_release -a
+```
+
+and it'll tell you the version number. This will be the same version number until you update the version; it won't change on you. For whatever reason, you can install the other versions to have separate Ubuntu installs.
+
+
+# Create the R studio server in linux
+
+
+## R install
+If you'll mostly use Rstudio it's better to follow the instructions from 
+
+![https://cran.rstudio.com/bin/linux/ubuntu/#user](https://cran.rstudio.com/bin/linux/ubuntu/#user).
+
+This points your libraries to more up to date R packages than the ones that come default with Ubuntu (which are usually just older ones). 
+
+An old version of the instructions are below to put into the shell.
+
+```.bash
+# update indices
+sudo apt update -qq
+# install two helper packages we need
+sudo apt install --no-install-recommends software-properties-common dirmngr
+# add the signing key (by Michael Rutter) for these repos
+# To verify key, run gpg --show-keys /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
+# Fingerprint: E298A3A825C0D65DFD57CBB651716619E084DAB9
+wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+# add the repo from CRAN -- lsb_release adjusts to 'noble' or 'jammy' or ... as needed
+sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+# install R itself
+sudo apt install r-base
+```
+
+
+Verify that R is installed
+```.bash
+R
+```
+
+Your commandline is here. You can even plot, or do anything else you'd want to do. But we're fairly spoiled with rstudio. Exit out of it `quit("no")`. 
+
+
+## R packages for Rstudio
+
+
+
+In a browser open the url for rstudio server: [https://posit.co/download/rstudio-server/](https://posit.co/download/rstudio-server/).
+
+In the dropdown, select the latest version before the version you have. Note that version number is sometimes written different ways. So 2024.04 is the same as just "Ubuntu 24", since Rstudio, like Windows only focuses on the LTS every 2 years.
+
+Step 2 is installing R if you haven't already. You can reinstall to be safe; it does a check to see what's already installed and skip installing any piece that's already installed. 
+
+In the change your directory to your Downloads folder (to keep things neat). If you don't have one, create one with 
+```.bash
+mkdir ~/Downloads
+```
+then go to the folder
+
+```.bash
+cd ~/Downloads
+```
+
+Then download rstudio There are two lines. The first is
+
+```.bash
+sudo apt-get install gdebi-core
+```
+
+The second line is specific to the most recent Rstudio for that version of Ubuntu. This changes everytime there's a new Rstudio version. IN Nov 2025 the line looked like
+
+
+```.bash
+wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2025.09.2-418-amd64.deb
+```
+Because the last version in September 2025 at the time this document was written. Copy the version on the webapge after you've selected your Ubuntu version. The command afterward (wget downloads that file into your current folder.
+
+Then, install the version you just downloaded. The file name changes depending on the version. You can just type `wget gdebi rstudio` and press <tab>, it'll auto-complete the filename for you and you can press enter. In my case it's
+
+```.bash
+sudo gdebi rstudio-server-2025.09.2-418-amd64.deb
+```
+When asked to install software packages, enter `y`.
+
+After that, your rstudio installation is complete. 
+
+
+# Using rstudio
+
+You must have the ubuntu shell open first (so that Ubuntu is running) before you start Rstudio. You can do other things in the shell at the same time, but at least one should be open.
+
+
+open any browser and go to the url
+
+[http://localhost:8787](http://localhost:8787)
+
+
+your username/password is your Ubuntu username/password.
+
+Now you're running rstudio from within linux, which lets you use things like `mclappy` when parallel computing.
+
+
+# Optionals
+
+## Change working directory
+
+I usually like my working directory to be a common place that I can easily access from windows like my Dropbox folder, my One drive folder, my Documents folder, etc. The c drive from windows can be accessed from:
+
+```.bash
+/mnt/c/
+```
+
+If I'm changing my default directory to my one drive directory I'll use something like
+
+```.bash
+/mnt/c/Documents and Settings/mshaikh
+```
+Which I've structured to have access to:
+
+- Downloads/
+- Documents/
+- One\ Drive\ -\ Thompson\ Rivers\ University/
+
+So this is what I'd prefer is my home folder when I load ubuntu, and when rstudio starts.
+
+To change this in Rstudio, go to
+
+Tools -> Global Options -> General ->
+
+At the top where it says R Sessions click "Browse"
+
+You can't go higher than the Ubuntu home folder here, you have to click the three dots at the top right which gives you a textbox to put the path you want.
+
+I personally want
+
+ - `/mnt/c/Documents and Settings/mshaikh`
+but you might have wanted
+
+ - `/mnt/c/Documents and Settings/mshaikh/Dropbox`
+
+
+Then click Choose-> Apply-> Ok.
+
+It's not a big deal because I ca use the file browser in the window to change the directory later if you want.
+
+Then log out and log back in. The log out button is at the top right.
+
+Now you'll see you are accessing the windows files. From now on, you can navigate using this file browser Tools->Global options. It's also your real files in windows.
+
+
+
+
