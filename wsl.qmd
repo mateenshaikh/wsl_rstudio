@@ -37,6 +37,13 @@ lsb_release -a
 
 and it'll tell you the version number. This will be the same version number until you update the version; it won't change on you. For whatever reason, you can install the other versions to have separate Ubuntu installs.
 
+# VS Code/Positron
+In ubuntu install vscode or positron and just launch it from the wsl 
+
+```.bash
+positron
+```
+
 
 # Create the R studio server in linux
 
@@ -180,6 +187,5 @@ Then log out and log back in. The log out button is at the top right.
 
 Now you'll see you are accessing the windows files. From now on, you can navigate using this file browser Tools->Global options. It's also your real files in windows.
 
-
-
-
+## Change the theme
+It's easy to mix up whether you're working in the local windows rstudio or the ubuntu one. To distinguish, I really prefer to make each instance different. On the local machine (windows) I'd use one colour theme, on the WSL version, I'd use another colour theme. On my big server, I use yet another theme. In the last case, this theme is consistent when I'm working at home, too, so I can always tell.
